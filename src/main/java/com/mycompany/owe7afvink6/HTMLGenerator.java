@@ -15,8 +15,8 @@ import java.io.IOException;
  */
 public class HTMLGenerator {
     
-    FileWriter htmlWriter;
-    BufferedWriter writer;
+    static FileWriter htmlWriter;
+    static BufferedWriter writer;
     
     /**
      * Schrijft HTML rapport met dna-sequentie en GC-percentage
@@ -26,7 +26,7 @@ public class HTMLGenerator {
      * @param name
      * @throws IOException 
      */
-    public void writeHTMLReport(int gc, String dnaSeq, String name) throws IOException {
+    public static void writeHTMLReport(int gc, String dnaSeq, String name) throws IOException {
         htmlWriter = new FileWriter(name + ".html");
         writer = new BufferedWriter(htmlWriter);
         writer.write(dnaSeq + "\nGC%: " + Integer.toString(gc));

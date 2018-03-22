@@ -9,13 +9,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-
-
-
+import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 
 /**
  *
@@ -23,49 +21,44 @@ import javax.swing.JOptionPane;
  */
 public class BestandLezen {
     
-    static ArrayList<String> seqBestandsnaam = new ArrayList<>();
-    
+    static String dna, filename;
+
     public static void main(String[] args) {
-        fileChooser();
-        
+        filename = fileChooser();
+        dna = bestandLezen(filename);
+        try {
+            HTMLGenerator.writeHTMLReport(GCCalculator.calculateGC(dna), dna, filename);
+        } catch (CompoundNotFoundException | IOException ex) {
+            Logger.getLogger(BestandLezen.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
-    public static void fileChooser(){
-        JFileChooser fileChooser = new JFileChooser();
-            int reply = fileChooser.showOpenDialog(this);
-            if (reply == JFileChooser.APPROVE_OPTION) {
-                File selectedFile1 = fileChooser.getSelectedFile();
-                String bestandsnaam = selectedFile1.getAbsolutePath();
-                fileLoc1 = textfieldBestand.getText();
-            }
+
     }
-    
-    public static void bestandLezen(String Path) {
+
+    public static String fileChooser() {
+        JFileChooser fileChooser = new JFileChooser();
+        int reply = fileChooser.showOpenDialog(null);
+        if (reply == JFileChooser.APPROVE_OPTION) {
+            File selectedFile1 = fileChooser.getSelectedFile();
+            return selectedFile1.getAbsolutePath();
+        }
+        return null;
+    }
+
+    public static String bestandLezen(String Path) {
         try {
             BufferedReader inFile;
             inFile = new BufferedReader(new FileReader(Path));
-            String line;
+            String line, sequentie = "";
             inFile.readLine();
-            int teller = 0;
-            //while ((line = inFile.readLine()) != null) { /// gebruik deze als je het hele bestand wilt inladen
-            while ((line = inFile.readLine()) != null) { // gebruik deze als je wilt testen (eerste 600 entries)
-                String sequentie = line;
-                seqBestandsnaam.add(sequentie);
-                seqBestandsnaam.add(bestandsnaam);
+            while ((line = inFile.readLine()) != null) {
+                sequentie += line;
             }
             inFile.close();
-
-        } catch (IOException e) {
+            return sequentie;
+        } catch (IOException | ArrayIndexOutOfBoundsException e) {
             JOptionPane.showMessageDialog(null, "Bestand kan niet gelezen worden, ga naar:ftp://ftp.genome.jp/pub/db/virushostdb/ en download het tsv bestand");
-        } catch (ArrayIndexOutOfBoundsException a) {
-            JOptionPane.showMessageDialog(null, "Bestand kan niet gelezen worden, ga naar:ftp://ftp.genome.jp/pub/db/virushostdb/ en download het tsv bestand");
-        } catch (Exception e) {
-            System.out.println("Onbekende fout: raadpleeg uw systeembeheerder");
         }
+        return null;
     }
 
 }
-
-
-
-    
