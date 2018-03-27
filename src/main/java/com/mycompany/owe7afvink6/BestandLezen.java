@@ -21,7 +21,7 @@ import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
  */
 public class BestandLezen {
     
-    static String dna, filename;
+    static String dna, filename, sequentie;
 
     public static void main(String[] args) {
         filename = fileChooser();
@@ -48,11 +48,10 @@ public class BestandLezen {
         try {
             BufferedReader inFile;
             inFile = new BufferedReader(new FileReader(Path));
-            String line, sequentie = "";
-            inFile.readLine();
-            while ((line = inFile.readLine()) != null) {
-                sequentie += line;
-            }
+            String line;
+            line = inFile.readLine();
+            sequentie = line;
+            
             inFile.close();
             return sequentie;
         } catch (IOException | ArrayIndexOutOfBoundsException e) {

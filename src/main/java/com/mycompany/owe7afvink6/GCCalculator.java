@@ -21,8 +21,15 @@ public class GCCalculator {
      * @return GC-percentage
      * @throws CompoundNotFoundException 
      */
-    public static int calculateGC(String seq) throws CompoundNotFoundException {
-        return new DNASequence(seq).getGCCount() / seq.length();
+    public static float calculateGC(String seq) throws CompoundNotFoundException {
+        int GCcount = new DNASequence(seq).getGCCount();
+        
+        int seqLengte = seq.length();
+        float percentage;
+        percentage = (GCcount / (float) seqLengte);
+
+        return percentage;
+        //return new DNASequence(seq).getGCCount() / seq.length();
     }
     
 }

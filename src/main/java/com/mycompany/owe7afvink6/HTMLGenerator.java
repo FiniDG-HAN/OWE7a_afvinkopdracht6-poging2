@@ -26,10 +26,11 @@ public class HTMLGenerator {
      * @param name
      * @throws IOException 
      */
-    public static void writeHTMLReport(int gc, String dnaSeq, String name) throws IOException {
+    public static void writeHTMLReport(float gc, String dnaSeq, String name) throws IOException {
         htmlWriter = new FileWriter(name + ".html");
+        gc *= 100;
         writer = new BufferedWriter(htmlWriter);
-        writer.write(dnaSeq + "\nGC%: " + Integer.toString(gc));
+        writer.write(dnaSeq + "\nGC%: " + Float.toString(gc));
         writer.close();
     }
 }
